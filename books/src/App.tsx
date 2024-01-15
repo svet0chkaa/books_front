@@ -1,55 +1,97 @@
-import "./Styles/Main.sass"
-import "./Styles/Reset.sass"
-import { useState } from 'react'
-import Header from "./Components/Header/Header";
-import {Service} from "./Types";
-import Breadcrumbs from "./Components/Breadcrumbs/Breadcrumbs";
-import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
-import ServicePage from "./Pages/ServicPage/ServicePage";
-import ServiceList from "./Pages/ServiceList/ServiceList";
-import AboutPage from "./Pages/AboutPage/AboutPage";
-import ContactsPage from "./Pages/ContactsPage/ContactsPage";
-import ProfilePage from "./Pages/ProfilePage/ProfilePage";
+import "./styles/Main.sass"
+import "./styles/Reset.sass"
+import Header from "./components/Header/Header";
+import Breadcrumbs from "./components/Breadcrumbs/Breadcrumbs";
+import {BrowserRouter, Route, Routes, Navigate, useLocation} from 'react-router-dom';
+import ServicePage from "./pages/ServicePage/ServicePage";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import {QueryClient, QueryClientProvider } from "react-query";
+import {Provider} from "react-redux"
+import store from "./store/store"
+import ServicesPage from "./pages/ServicesPage/ServicesPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import RegisterPage from "./pages/RegisterPage/RegisterPage";
+import {useAuth} from "./hooks/users/useAuth";
+import OrderConstructor from "./components/OrderConstructor/OrderConstructor";
+import OrderPage from "./pages/OrderPage/OrderPage";
+import OrdersPage from "./pages/OrdersPage/OrdersPage";
+import ServiceEditPage from "./pages/ServiceEditPage/ServiceEditPage";
+import ServiceAddPage from "./pages/ServiceAddPage/ServiceAddPage";
 
-function App() {
-    const [selectedService, setSelectedService] = useState<Service | undefined>(undefined)
+
+const TopPanelWrapper = () => {
+
+    const {is_authenticated, is_moderator} = useAuth()
+
+    const location = useLocation()
 
     return (
-        <BrowserRouter basename="/books">
+        <div className="top-panel-wrapper">
+            <Breadcrumbs />
+            {is_authenticated && !is_moderator && location.pathname.endsWith("services") && <OrderConstructor /> }
+        </div>
+    )
+}
 
-            <div className="App">
 
-                <div className="wrapper">
+function App() {
 
-                    <Header />
+    const queryClient = new QueryClient()
 
-                    <div className={"content-wrapper"}>
+    return (
+        <QueryClientProvider client={queryClient}>
 
-                        <Breadcrumbs selectedService={selectedService} setSelectedService={setSelectedService}/>
+            <Provider store={store}>
 
-                        <Routes>
+                <BrowserRouter basename="/books_front">
 
-                            <Route path="/" element={<Navigate to="/services" replace />} />
+                    <div className="App">
 
-                            <Route path="/about" element={<AboutPage />} />
+                        <div className="wrapper">
 
-                            <Route path="/contacts" element={<ContactsPage />} />
+                            <Header />
 
-                            <Route path="/profile" element={<ProfilePage />} />
+                            <div className={"content-wrapper"}>
 
-                            <Route path="/services" element={<ServiceList />} />
+                                <TopPanelWrapper />
 
-                            <Route path="/services/:id" element={<ServicePage selectedService={selectedService} setSelectedService={setSelectedService} />} />
+                                <Routes>
 
-                        </Routes>
+                                    <Route path="/" element={<Navigate to="/services" replace />} />
+
+                                    <Route path="/profile" element={<ProfilePage />} />
+
+                                    <Route path="/services" element={<ServicesPage />} />
+
+                                    <Route path="/services/add" element={<ServiceAddPage />} />
+
+                                    <Route path="/services/:id" element={<ServicePage />} />
+
+                                    <Route path="/services/:id/edit" element={<ServiceEditPage />} />
+
+                                    <Route path="/profile" element={<ProfilePage />} />
+
+                                    <Route path="/orders/:id" element={<OrderPage />} />
+
+                                    <Route path="/orders" element={<OrdersPage />} />
+
+                                    <Route path="/login" element={<LoginPage />} />
+
+                                    <Route path="/register" element={<RegisterPage />} />
+
+                                </Routes>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
-                </div>
+                </BrowserRouter>
 
-            </div>
+            </Provider>
 
-        </BrowserRouter>
+        </QueryClientProvider>
     )
 }
 
