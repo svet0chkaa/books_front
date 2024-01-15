@@ -43,7 +43,7 @@ function App() {
 
             <Provider store={store}>
 
-                <BrowserRouter basename="/books">
+                <BrowserRouter basename="/books_front">
 
                     <div className="App">
 
