@@ -1,6 +1,6 @@
 export interface Service {
     id: number,
-    title: string,
+    name: string,
     status: number,
     description: string,
     price: number,

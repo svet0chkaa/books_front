@@ -2,46 +2,36 @@ import "./Breadcrumbs.sass"
 import { Link, useLocation } from "react-router-dom";
 import {FaChevronRight} from "react-icons/fa6";
 import {FaHome} from "react-icons/fa";
-import {useService} from "../../hooks/services/useService";
-import {useOrder} from "../../hooks/orders/useOrder";
+import {Service} from "../../Types";
+import {Dispatch} from "react";
 
-const Breadcrumbs = () => {
+const Breadcrumbs = ({ selectedService, setSelectedService }: { selectedService:Service | undefined, setSelectedService: Dispatch<Service | undefined> }) => {
 
     const location = useLocation()
 
-    const {service, setService} = useService()
-
-    const { order, is_draft } = useOrder()
-
     let currentLink = ''
 
-    const resetSelectedService = () => setService(undefined)
-
-    const topics = {
-        "services": "Работы",
-        "orders": "Заказы",
-        "home": "Главная",
-        "login": "Вход",
-        "register": "Регистрация",
+    const topics: Record<string, string> = {
+        "services": "Работы издательства",
+        "about": "О нас",
+        "contacts": "Контакты",
+        "help": "Помощь",
         "profile": "Личный кабинет"
     }
 
-    const exclude_topics = ["edit"]
+    const resetSelectedService = () => setSelectedService(undefined)
 
     const crumbs = location.pathname.split('/').filter(crumb => crumb !== '').map(crumb => {
 
         currentLink += `/${crumb}`
 
-        if (exclude_topics.find(x => x == crumb)) {
-            return
-        }
-
-        if (Object.keys(topics).find(x => x == crumb)) {
+        if (Object.keys(topics).find(x => x == crumb))
+        {
             return (
                 <div className={"crumb"} key={crumb}>
 
                     <Link to={currentLink} onClick={resetSelectedService}>
-                        { topics[crumb] }
+                        { (topics as never)[crumb] }
                     </Link>
 
                     <FaChevronRight className={"chevron-icon"}/>
@@ -50,44 +40,13 @@ const Breadcrumbs = () => {
             )
         }
 
-        if (currentLink.match(new RegExp('add')))
+        if (currentLink.match(new RegExp('services/(d*)')))
         {
             return (
                 <div className={"crumb"} key={crumb}>
 
                     <Link to={currentLink}>
-                        Новая работа
-                    </Link>
-
-                    <FaChevronRight className={"chevron-icon"}/>
-
-                </div>
-            )
-        }
-
-
-        if (currentLink.match(new RegExp('orders/(\d*)')))
-        {
-            return (
-                <div className={"crumb"} key={crumb}>
-
-                    <Link to={currentLink}>
-                        {is_draft ? "Новый заказ" : "Заказ №" + order?.id}
-                    </Link>
-
-                    <FaChevronRight className={"chevron-icon"}/>
-
-                </div>
-            )
-        }
-
-        if (currentLink.match(new RegExp('services/(\d*)')))
-        {
-            return (
-                <div className={"crumb"} key={crumb}>
-
-                    <Link to={currentLink}>
-                        {service?.name}
+                        { selectedService?.name }
                     </Link>
 
                     <FaChevronRight className={"chevron-icon"}/>
@@ -103,7 +62,7 @@ const Breadcrumbs = () => {
 
                 <div className="crumb">
 
-                    <Link to={"/services"}>
+                    <Link to={"/about"}>
                         <FaHome className="home-icon" />
                     </Link>
 

@@ -18,7 +18,7 @@ const ServiceCard = ({ service, isMock }: {service:Service, isMock:boolean }) =>
 
                 <div className="content-top">
 
-                    <h3 className="title"> {service.title} </h3>
+                    <h3>{service.name}</h3>
 
                 </div>
 

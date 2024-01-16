@@ -4,7 +4,7 @@ export const requestTime = 1000
 export const iServicesMock = [
     {
         id: 1,
-        title: "Печать",
+        name: "Печать",
         status: 1,
         price: 1000,
         description: "Для уточнения деталей услуги свяжитесь с нами.",
@@ -12,7 +12,7 @@ export const iServicesMock = [
     },
     {
         id: 2,
-        title: "Брошюрирование",
+        name: "Брошюрирование",
         status: 1,
         price: 5000,
         description: "Для уточнения деталей услуги свяжитесь с нами.",
@@ -20,7 +20,7 @@ export const iServicesMock = [
     },
     {
         id: 3,
-        title: "Дизайн обложки",
+        name: "Дизайн обложки",
         status: 1,
         price: 3000,
         description: "Для уточнения деталей услуги свяжитесь с нами.",

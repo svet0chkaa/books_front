@@ -1,4 +1,5 @@
 import "./Header.sass"
+import logo from "/src/assets/logo.png"
 import NavMenu from "./NavMenu/NavMenu";
 
 const Header = () => {
@@ -6,7 +7,8 @@ const Header = () => {
         <div className="header-wrapper">
 
             <div className="left-container">
-                <h3>Книжное издательство</h3>
+                <img src={logo} alt=""/>
+                <h3>Империя печати</h3>
             </div>
 
             <div className="right-container">
