@@ -12,7 +12,7 @@ const Breadcrumbs = ({ selectedService, setSelectedService }: { selectedService:
     let currentLink = ''
 
     const topics: Record<string, string> = {
-        "services": "Сервисы",
+        "services": "Работы издательства",
         "about": "О нас",
         "contacts": "Контакты",
         "help": "Помощь",
@@ -46,7 +46,7 @@ const Breadcrumbs = ({ selectedService, setSelectedService }: { selectedService:
                 <div className={"crumb"} key={crumb}>
 
                     <Link to={currentLink}>
-                        { selectedService?.title }
+                        { selectedService?.name }
                     </Link>
 
                     <FaChevronRight className={"chevron-icon"}/>

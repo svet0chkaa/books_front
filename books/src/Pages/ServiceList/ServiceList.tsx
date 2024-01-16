@@ -1,9 +1,9 @@
 import "./ServiceList.sass"
-import SearchBar from "./SearchBar/SearchBar";
-import {useEffect, useState} from "react";
-import ServiceCard from "./ServiceList/ServiceCard";
+import React, {useEffect, useState} from "react";
+import ServiceCard from "./ServiceCard/ServiceCard";
 import {iServicesMock, requestTime} from "../../Consts";
 import {Service} from "../../Types";
+import {FaSearch} from "react-icons/fa";
 
 const ServiceList = () => {
 
@@ -27,7 +27,8 @@ const ServiceList = () => {
                 return;
             }
 
-            const services: Service[] = await response.json()
+            const raw = await response.json()
+            const services = raw.services
 
             setServices(services)
             setIsMock(false)
@@ -42,28 +43,46 @@ const ServiceList = () => {
     const createMock = () => {
 
         setIsMock(true);
-        setServices(iServicesMock)
+        setServices(iServicesMock.filter(service => service.name.toLowerCase().includes(query)))
 
     }
 
     useEffect(() => {
         searchServices()
-    }, [query])
+    }, [])
 
     const cards = services.map(service  => (
         <ServiceCard service={service} key={service.id} isMock={isMock}/>
     ))
 
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        await searchServices()
+    }
+
     return (
         <div className="cards-list-wrapper">
 
-            <div className="top">
+            <form className="top" onSubmit={handleSubmit}>
 
-                <h2>Поиск сервисов</h2>
+                <h2>Поиск работ издательства</h2>
 
-                <SearchBar query={query} setQuery={setQuery} />
+                <div className="right-container">
+                    <input
+                        type="text"
+                        placeholder="Поиск..."
+                        name="query"
+                        autoComplete="off"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
 
-            </div>
+                    <button type="submit">
+                        <FaSearch className={"search-icon"}/>
+                    </button>
+                </div>
+
+            </form>
 
             <div className="bottom">
 

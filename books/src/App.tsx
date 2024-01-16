@@ -8,7 +8,6 @@ import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
 import ServicePage from "./Pages/ServicPage/ServicePage";
 import ServiceList from "./Pages/ServiceList/ServiceList";
 import AboutPage from "./Pages/AboutPage/AboutPage";
-import ContactsPage from "./Pages/ContactsPage/ContactsPage";
 import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 
 function App() {
@@ -32,8 +31,6 @@ function App() {
                             <Route path="/" element={<Navigate to="/services" replace />} />
 
                             <Route path="/about" element={<AboutPage />} />
-
-                            <Route path="/contacts" element={<ContactsPage />} />
 
                             <Route path="/profile" element={<ProfilePage />} />
 

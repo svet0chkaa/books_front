@@ -69,7 +69,7 @@ const ServicePage = ({ selectedService, setSelectedService }: { selectedService:
 
                 <div className="info-container">
 
-                    <h2 className="name">{selectedService?.title}</h2>
+                    <h2 className="name">{selectedService?.name}</h2>
 
                     <br />
 
